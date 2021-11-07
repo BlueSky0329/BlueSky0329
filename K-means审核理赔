@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+trainData = pd.read_csv('/train.csv')
+testData = pd.read_csv('/test.csv')
+submitData = pd.read_csv('/sample_submit.csv')
+trainData.drop("CaseId", axis=1, inplace=True)
+testData.drop("CaseId", axis=1, inplace=True)
+trainData.head()
+trainData.info()
+trainData.hist(figsize=(20, 20))
+corr_matrix = trainData.corr()
+corr_matrix["Evaluation"].sort_values(ascending=False)
+y = trainData['Evaluation']
+trainData.drop("Evaluation", axis=1, inplace=True)
+est = KMeans(n_clusters=2, init="k-means++", n_jobs=-1)
+est.fit(trainData, y)
+y_pred = est.predict(testData)
+submitData['Evaluation'] = y_pred
+submitData.to_csv("submit_data.csv", index=False)
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators=100, random_state=0)
+clf.fit(trainData, y)
+y_pred = clf.predict_proba(testData)[:, 1]
+submitData['Evaluation'] = y_pred
+submitData.to_csv('my_RF_prediction.csv', index=False)
