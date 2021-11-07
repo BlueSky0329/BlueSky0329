@@ -1,4 +1,4 @@
 - 👋 Hi, here Team Future
-- 👀 A Detectron2 Car Damage Detection
+- 👀 Detectron2车损检测
 - 💞️ KMeans预测理赔概率
 - 📫 道路数据分析出险情况
